@@ -13,11 +13,11 @@ function SmallMultiples() {
   var area = d3.svg.area()
     .x(function(d) { return x(d.date); })
     .y0(height)
-    .y1(function(d) { return y(d.price); });
+    .y1(function(d) { return y(d.riders); });
 
   var line = d3.svg.line()
     .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.price); });
+    .y(function(d) { return y(d.riders); });
 
 
   d3.csv("../_data/stocks.csv", objectConverterByRow, generateChartsFromData);
@@ -26,44 +26,44 @@ function SmallMultiples() {
 //      data.sort(function(a,b) {return b.date-a.date;});
       data.sort(function(a,b) {return a.date-b.date;});
 
-      // Nest data by symbol.
-      var symbols = d3.nest()
+      // Nest data by destination.
+      var destinations = d3.nest()
                       .key(function(raw_csv_row) {
-                        return raw_csv_row.symbol;
+                        return raw_csv_row.destination;
                       })
                       .entries(data);
 
 
-      // Compute the maximum price per symbol, needed for the y-domain.
-      symbols.forEach(function(symbol) {
-        symbol.maxPrice = d3.max(symbol.values, function(d) { return d.price; });
+      // Compute the maximum riders per destination, needed for the y-domain.
+      destinations.forEach(function(destination) {
+        destination.maxRiders = d3.max(destination.values, function(d) { return d.riders; });
 
-        if (yDomain < symbol.maxPrice) {
-          yDomain = symbol.maxPrice;
+        if (yDomain < destination.maxRiders) {
+          yDomain = destination.maxRiders;
         };
       });
 
-      symbols.sort(function(a,b) {return a.key.localeCompare(b.key);});
+      destinations.sort(function(a,b) {return a.key.localeCompare(b.key);});
 
-      console.log(symbols)
-      // Compute the minimum and maximum date across symbols.
+      console.log(destinations)
+      // Compute the minimum and maximum date across destinations.
       // We assume values are sorted by date.
       this.x.domain([
-        d3.max(symbols, function(symbol) { return symbol.values[0].date; }),
-        d3.min(symbols, function(symbol) { return symbol.values[symbol.values.length - 1].date; })
-//        d3.min(symbols, function(symbol) { return symbol.values[0].date; }),
-//        d3.max(symbols, function(symbol) { return symbol.values[symbol.values.length - 1].date; })
+        d3.max(destinations, function(destination) { return destination.values[0].date; }),
+        d3.min(destinations, function(destination) { return destination.values[destination.values.length - 1].date; })
+//        d3.min(destinations, function(destination) { return destination.values[0].date; }),
+//        d3.max(destinations, function(destination) { return destination.values[destination.values.length - 1].date; })
       ]);
 
-      return symbols;
+      return destinations;
   }
 
   function generateChartsFromData(error, data) {
-    var symbols = manipulateData(data)
+    var destinations = manipulateData(data)
 
-    // Add an SVG element for each symbol, with the desired dimensions and margin.
+    // Add an SVG element for each destination, with the desired dimensions and margin.
     var svg = d3.select("#viz").selectAll("svg")
-      .data(symbols)
+      .data(destinations)
       .enter()
       .append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -81,7 +81,7 @@ function SmallMultiples() {
       .attr("class", "line")
       .attr("d", function(d) { y.domain([0, yDomain]); return line(d.values); });
      
-    // Add a small label for the symbol name.
+    // Add a small label for the destination name.
     svg.append("text")
       .attr("x", width - 6)
       .attr("y", height - 6)
@@ -90,7 +90,7 @@ function SmallMultiples() {
     }
 
   function objectConverterByRow(csv_object) {
-    csv_object.price = +csv_object.price;
+    csv_object.riders = +csv_object.riders;
     csv_object.date = parseDate(csv_object.date);
     return csv_object;
   }
