@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-
-
 <body>
-  <div id="viz">
-    <div id="map"></div>
-    <div id="multiples"></div>
-  </div>
+  <div id="superview">
+    <div id="viz">
+      
+      <div id="map"></div>
+      <div id="multiples"></div>
+    </div>
+    
+    <div id="test"> 
+      <form>
+        <input type="button" id="button" value="left">
+      </form>
+    </div>  
 
 <script src="_lib/d3/d3.v3.min.js"></script>
 <link rel="stylesheet" type="text/css" href="_css/style.css" />
@@ -53,7 +59,7 @@ d3.max(symbols, function(s) { return s.values[s.values.length - 1].date; })
 ]);
  
 // Add an SVG element for each symbol, with the desired dimensions and margin.
-var svg = d3.select("body").selectAll("svg")
+var svg = d3.select("#viz").selectAll("svg")
 .data(symbols)
 .enter().append("svg")
 .attr("width", width + margin.left + margin.right)
