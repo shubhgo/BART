@@ -1,7 +1,7 @@
 //adapted from https://gist.github.com/mbostock/1157787
 $(document).ready(function() {
 
-function SmallMultiples() {
+function SmallMultiples(urlForData) {
   this.margin = {top: 8, right: 10, bottom: 2, left: 10};
   this.width = (960 - margin.left - margin.right)/4;
   this.height = 120 - margin.top - margin.bottom;
@@ -20,9 +20,12 @@ function SmallMultiples() {
     .y(function(d) { return y(d.riders); });
 
 
-  d3.csv("../_data/stocks.csv", objectConverterByRow, generateChartsFromData);
+  d3.csv(urlForData, objectConverterByRow, generateChartsFromData);
 
   function manipulateData(data) {
+
+  //if json object isn't correctly typed, use function objectConverterbyRow to
+  //iterate through objects and convert them here
 //      data.sort(function(a,b) {return b.date-a.date;});
       data.sort(function(a,b) {return a.date-b.date;});
 
@@ -96,6 +99,15 @@ function SmallMultiples() {
   }
 }
 
-SmallMultiples()
+//MapDiagram.onclick() {
+//do stuff to know what station they click
+//do stuff to calculate the name of the csv robyn needs
+//var csv_url = //
+
+//SmallMultiples(csv_url)
+
+//}
+SmallMultiples("../_data/stocks.csv")
+
 });
 
