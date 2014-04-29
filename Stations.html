@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+    <title>Stations.html</title>
+</head>
+<body>
+    <div id="viz"></div>
+    <script type="text/javascript">
+var edge_wt=0;
+
+var stations = [
+  { "st_id":"A", "x_axis": 30, "y_axis": 60, "radius": 4, "color" : "green" },
+  { "st_id":"B", "x_axis": 60, "y_axis": 60, "radius": 4, "color" : "green"},
+  { "st_id":"C", "x_axis": 90, "y_axis": 60, "radius": 4, "color" : "purple" },
+  { "st_id":"D", "x_axis": 120, "y_axis": 40, "radius": 4, "color" : "green" },
+  { "st_id":"E", "x_axis": 150, "y_axis": 20, "radius": 4, "color" : "green" },
+  { "st_id":"F", "x_axis": 90, "y_axis": 90, "radius": 4, "color" : "red" },
+  { "st_id":"H", "x_axis": 120, "y_axis": 100, "radius": 4, "color" : "green"},
+  { "st_id":"G", "x_axis": 90, "y_axis": 120, "radius": 4, "color" : "green" }
+  ];
+  
+var edges = [
+{ "ed_id": "A_B", "x1": 30, "y1": 60, "x2":60, "y2":60, "weight":2},
+{ "ed_id": "B_C", "x1": 60, "y1": 60, "x2":90, "y2":60, "weight":2},
+{ "ed_id": "C_D", "x1": 90, "y1": 60, "x2":120, "y2":40, "weight":2},
+{ "ed_id": "D_E", "x1": 120, "y1": 40, "x2":150, "y2":20, "weight":2},
+{ "ed_id": "C_F", "x1": 90, "y1": 60, "x2":90, "y2":90, "weight":2},
+{ "ed_id": "F_G", "x1": 90, "y1": 90, "x2":90, "y2":120, "weight":2},
+{ "ed_id": "F_H", "x1": 90, "y1": 90, "x2":120, "y2":100, "weight":2},
+];
+
+var svgContainer = d3.select("body").append("svg")
+                                    .attr("width", 200)
+                                    .attr("height", 200);
+
+var edges = svgContainer.selectAll("line")
+.data(edges)
+.enter()
+.append("line")
+.attr("x1", function (data) { return data.x1; })
+.attr("y1", function (data) { return data.y1; })
+.attr("x2", function (data) { return data.x2; })
+.attr("y2", function (data) { return data.y2; })
+.style("stroke", "rgb(6,120,155)")
+.style("stroke-width", 2)
+.style("stroke-opacity", 0.6); 
+
+var circles = svgContainer.selectAll("circle")
+                          .data(stations)
+                          .enter()
+                          .append("circle");
+
+var circleAttributes = circles
+                       .attr("cx", function (d) { return d.x_axis; })
+                       .attr("cy", function (d) { return d.y_axis; })
+                       .attr("r", function (d) { return d.radius; })
+                       .style("fill", function(d) { return d.color; });
+
+circles.on("mouseover", expandStationSize)
+.on("mouseout", returnStationSizeToNormal)
+.on("mousedown", sourceSelected);
+
+
+function expandStationSize()
+{
+d3.select(this).attr("r", 6)
+.style("fill", "black");
+}
+
+function returnStationSizeToNormal()
+{
+d3.select(this).attr("r", 4)
+.style("fill", "green");
+}
+
+function animateEdgesWithData(edge_weights)
+{
+
+//console.log(edges)
+console.log(edge_weights)
+
+
+var edges = svgContainer.selectAll("line")
+.data(edge_weights);
+
+edges
+.attr("x1", function (data) { return data.x1; })
+.attr("y1", function (data) { return data.y1; })
+.attr("x2", function (data) { return data.x2; })
+.attr("y2", function (data) { return data.y2; })
+.style("stroke", "rgb(6,120,155)")
+.style("stroke-opacity", 0.6);
+
+
+edges.transition()
+.duration(300)
+.ease("quad")
+.style("stroke-width", function(data) { return data.weight; })
+
+
+}
+
+function sourceSelected()
+{
+// This is where shit goes down!
+// Get source station
+current_element = d3.select(this);
+source_station_id = current_element.datum().st_id;
+
+//console.log(current_element.datum().st_id);
+
+//TODO Get data
+
+
+
+// url localhost:27608/edges?datetime=jan2014&source=source_station_id
+//var json_A = [
+//	{
+//		"ed_id" : "A_B",
+//		"x1" : "30",
+//		"y1" : "60",
+//		"x2" : "60",
+//		"y2" : "60",
+//		"weight" : "6"
+//	}
+//];
+//var edge_wt = 0; // a global
+
+edge_weight_file = "data/"+source_station_id+".json";
+//console.log(edge_weight_file);
+d3.json(edge_weight_file, function(json, error)
+{
+  if (error) return console.warn(error);
+  window.edge_wt = json;
+//  console.log(window.edge_wt);
+//  visualizeit();
+});
+/*
+
+// alternatively
+var myjson = '{"name": "flare","children": [{"name": "analytics","children": [{"name": "cluster","children": [{"name": "MergeEdge", "size": 10 }]}]}]}';
+
+// d3.json("/path/flare.json", function(json) { #delete this line
+
+    json = JSON.parse( myjson ); //add this line
+
+    //rendering logic here
+
+//} #delete this line
+*/
+
+//TODO reload data
+//console.log(window.edge_wt);
+animateEdgesWithData(window.edge_wt);
+//TODO reload small multiples
+
+//TODO any clean up
+}
+
+function animateFirstStep(){
+    d3.select(this)
+      .transition()
+        .delay(0)
+        .duration(1000)
+        .attr("r", 10)
+        .each("end", animateSecondStep);
+};
+
+function animateSecondStep(){
+    d3.select(this)
+      .transition()
+        .duration(1000)
+        .attr("r", 40);
+};
+
+
+/*
+    .on("mouseover", function(){d3.select(this).style("fill", "aliceblue");})
+    .on("mouseout", function(){d3.select(this).style("fill", "white");})
+    .on("mousedown", animateFirstStep);
+
+function animateFirstStep(){
+    d3.select(this)
+      .transition()            
+        .delay(0)            
+        .duration(1000)
+        .attr("r", 10)
+        .each("end", animateSecondStep);
+};
+
+function animateSecondStep(){
+    d3.select(this)
+      .transition()
+        .duration(1000)
+        .attr("r", 40);
+};
+
+*/
+
+
+    </script>
+</body>
+</html>
