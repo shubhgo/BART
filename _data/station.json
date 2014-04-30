@@ -72,7 +72,7 @@ var stations = [
   {
     "st_id":"FV",
     "x_axis":631,
-    "y_axis":998,
+    "y_axis":498,
     "radius":4,
     "color":"black"
   },

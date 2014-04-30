@@ -2,7 +2,8 @@
 <html>
 <head>
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
-    <script type="text/javascript" src="_data/station_coordinates.json"></script>
+    <script type="text/javascript" src="_data/station.json"></script>
+    <script type="text/javascript" src="_data/edges.json"></script>
     <title>Stations.html</title>
 </head>
 <body>
@@ -14,6 +15,7 @@ var edge_wt=0;
 //scales
 var x = d3.scale.linear().domain([0, 1050]).range([0, 400]);
 var y = d3.scale.linear().domain([0, 850]).range([0, 600]);
+var e = d3.scale.linear().domain([0, 4000]).range([0, 20]);
 
 //var stations = [
 //  { "st_id":"A", "x_axis": 30, "y_axis": 60, "radius": 4, "color" : "black" },
@@ -26,31 +28,31 @@ var y = d3.scale.linear().domain([0, 850]).range([0, 600]);
 //  { "st_id":"G", "x_axis": 90, "y_axis": 120, "radius": 4, "color" : "green" }
 //  ];
   
-var edges = [
-{ "ed_id": "A_B", "x1": 30, "y1": 60, "x2":60, "y2":60, "weight":2},
-{ "ed_id": "B_C", "x1": 60, "y1": 60, "x2":90, "y2":60, "weight":2},
-{ "ed_id": "C_D", "x1": 90, "y1": 60, "x2":120, "y2":40, "weight":2},
-{ "ed_id": "D_E", "x1": 120, "y1": 40, "x2":150, "y2":20, "weight":2},
-{ "ed_id": "C_F", "x1": 90, "y1": 60, "x2":90, "y2":90, "weight":2},
-{ "ed_id": "F_G", "x1": 90, "y1": 90, "x2":90, "y2":120, "weight":2},
-{ "ed_id": "F_H", "x1": 90, "y1": 90, "x2":120, "y2":100, "weight":2},
-];
+//var edges = [
+//{ "ed_id": "A_B", "x1": 30, "y1": 60, "x2":60, "y2":60, "weight":2},
+//{ "ed_id": "B_C", "x1": 60, "y1": 60, "x2":90, "y2":60, "weight":2},
+//{ "ed_id": "C_D", "x1": 90, "y1": 60, "x2":120, "y2":40, "weight":2},
+//{ "ed_id": "D_E", "x1": 120, "y1": 40, "x2":150, "y2":20, "weight":2},
+//{ "ed_id": "C_F", "x1": 90, "y1": 60, "x2":90, "y2":90, "weight":2},
+//{ "ed_id": "F_G", "x1": 90, "y1": 90, "x2":90, "y2":120, "weight":2},
+//{ "ed_id": "F_H", "x1": 90, "y1": 90, "x2":120, "y2":100, "weight":2},
+//];
 
 var svgContainer = d3.select("body").append("svg")
                                     .attr("width", 1000)
                                     .attr("height", 1000);
 
-//var edges = svgContainer.selectAll("line")
-//.data(edges)
-//.enter()
-//.append("line")
-//.attr("x1", function (data) { return data.x1; })
-//.attr("y1", function (data) { return data.y1; })
-//.attr("x2", function (data) { return data.x2; })
-//.attr("y2", function (data) { return data.y2; })
-//.style("stroke", "rgb(6,120,155)")
-//.style("stroke-width", 2)
-//.style("stroke-opacity", 0.6); 
+var edges = svgContainer.selectAll("line")
+.data(edges)
+.enter()
+.append("line")
+.attr("x1", function (data) { return x(data.x1); })
+.attr("y1", function (data) { return y(data.y1); })
+.attr("x2", function (data) { return x(data.x2); })
+.attr("y2", function (data) { return y(data.y2); })
+.style("stroke", "rgb(6,120,155)")
+.style("stroke-width", 1)
+.style("stroke-opacity", 0.6); 
 
 var circles = svgContainer.selectAll("circle")
                           .data(stations)
@@ -63,9 +65,9 @@ var circleAttributes = circles
                        .attr("r", function (d) { return d.radius; })
                        .style("fill", function(d) { return d.color; });
 
-//circles.on("mouseover", expandStationSize)
-//.on("mouseout", returnStationSizeToNormal)
-//.on("mousedown", sourceSelected);
+circles.on("mouseover", expandStationSize)
+.on("mouseout", returnStationSizeToNormal)
+.on("mousedown", sourceSelected);
 
 
 function expandStationSize()
@@ -77,7 +79,7 @@ d3.select(this).attr("r", 6)
 function returnStationSizeToNormal()
 {
 d3.select(this).attr("r", 4)
-.style("fill", "green");
+.style("fill", "black");
 }
 
 function animateEdgesWithData(edge_weights)
@@ -91,18 +93,21 @@ var edges = svgContainer.selectAll("line")
 .data(edge_weights);
 
 edges
+.style("stroke", "rgb(6,120,155)")
+.style("stroke-opacity", 0.6);
+
+/*
 .attr("x1", function (data) { return data.x1; })
 .attr("y1", function (data) { return data.y1; })
 .attr("x2", function (data) { return data.x2; })
 .attr("y2", function (data) { return data.y2; })
-.style("stroke", "rgb(6,120,155)")
-.style("stroke-opacity", 0.6);
 
+*/
 
 edges.transition()
 .duration(300)
 .ease("quad")
-.style("stroke-width", function(data) { return data.weight; })
+.style("stroke-width", function(data) { return e(data.weight); })
 
 
 }
