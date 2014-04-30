@@ -13,8 +13,8 @@
 var edge_wt=0;
 
 //scales
-var x = d3.scale.linear().domain([0, 1050]).range([0, 400]);
-var y = d3.scale.linear().domain([0, 850]).range([0, 600]);
+var x = d3.scale.linear().domain([0, 25]).range([0, 400]);
+var y = d3.scale.linear().domain([0, 25]).range([0, 600]);
 var e = d3.scale.linear().domain([0, 4000]).range([0, 20]);
 
 //var stations = [
@@ -78,7 +78,7 @@ d3.select(this).attr("r", 6)
 
 function returnStationSizeToNormal()
 {
-d3.select(this).attr("r", 4)
+d3.select(this).attr("r", 2)
 .style("fill", "black");
 }
 
@@ -138,7 +138,7 @@ source_station_id = current_element.datum().st_id;
 //];
 //var edge_wt = 0; // a global
 
-edge_weight_file = "_data/"+source_station_id+".json";
+edge_weight_file = "_data/edges/"+source_station_id+".json";
 //console.log(edge_weight_file);
 d3.json(edge_weight_file, function(json, error)
 {

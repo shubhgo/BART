@@ -107,7 +107,7 @@ function SmallMultiples(urlForData) {
 //SmallMultiples(csv_url)
 
 //}
-SmallMultiples("../_data/stocks.csv")
+SmallMultiples("_data/stocks.csv")
 
 });
 
