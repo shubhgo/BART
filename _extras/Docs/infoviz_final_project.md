@@ -28,10 +28,11 @@
 
 # Marti Feedback
 - Small multiples is confusing because it is not small multiples of the same visualization
-- over lapping time-series. the destination station is highlighted and then we can scrub over the time line. 
-- Presentation mode: 
+ - Presentation mode: 
 	- also why: like are there seasonal trends
 	- is there something interesting during the game season
 - using colors to show case the regional flow
 - bart car shaped bars in the map viz
 - **log** of values
+- Pricing data
+- use animation to show the number of users dropping out at each station
