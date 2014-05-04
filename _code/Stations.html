@@ -15,7 +15,7 @@ var edge_wt=0;
 //scales
 var x = d3.scale.linear().domain([0, 25]).range([0, 400]);
 var y = d3.scale.linear().domain([0, 25]).range([0, 600]);
-var e = d3.scale.linear().domain([0, 4000]).range([0, 20]);
+var e = d3.scale.log().domain([0, 4000]).range([0, 20]);
 
 //var stations = [
 //  { "st_id":"A", "x_axis": 30, "y_axis": 60, "radius": 4, "color" : "black" },
@@ -86,15 +86,15 @@ function animateEdgesWithData(edge_weights)
 {
 
 //console.log(edges)
-console.log(edge_weights)
+// console.log(edge_weights)
 
 
 var edges = svgContainer.selectAll("line")
 .data(edge_weights);
 
-edges
-.style("stroke", "rgb(6,120,155)")
-.style("stroke-opacity", 0.6);
+// edges
+// .style("stroke", "rgb(6,120,155)")
+// .style("stroke-opacity", 0.6);
 
 /*
 .attr("x1", function (data) { return data.x1; })
@@ -138,6 +138,7 @@ source_station_id = current_element.datum().st_id;
 //];
 //var edge_wt = 0; // a global
 
+// todo: move to function
 edge_weight_file = "_data/edges/"+source_station_id+".json";
 //console.log(edge_weight_file);
 d3.json(edge_weight_file, function(json, error)

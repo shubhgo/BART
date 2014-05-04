@@ -4,7 +4,9 @@ var stations = [
     "x_axis":16,
     "y_axis":13,
     "color":"black",
-    "radius":2
+    "radius":2,
+	"region": "North",
+	"name": "12th street station"
   },
   {
     "st_id":"16",
