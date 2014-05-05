@@ -2,14 +2,15 @@
 <html>
 <head>
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
-    <script type="text/javascript" src="_data/station.js"></script>
+    <!-- loads variables stations and edges -->
+    <script type="text/javascript" src="_data/stations.js"></script>
     <script type="text/javascript" src="_data/edges.js"></script>
     <title>Stations.html</title>
 </head>
 <body>
-    <div id="viz"></div>
+<div id="viz"></div>
     
-    <script type="text/javascript">
+<script type="text/javascript">
 var edge_wt=0;
 
 //scales
@@ -17,43 +18,24 @@ var x = d3.scale.linear().domain([0, 25]).range([0, 400]);
 var y = d3.scale.linear().domain([0, 25]).range([0, 600]);
 var e = d3.scale.log().domain([0, 4000]).range([0, 20]);
 
-//var stations = [
-//  { "st_id":"A", "x_axis": 30, "y_axis": 60, "radius": 4, "color" : "black" },
-//  { "st_id":"B", "x_axis": 60, "y_axis": 60, "radius": 4, "color" : "green"},
-//  { "st_id":"C", "x_axis": 90, "y_axis": 60, "radius": 4, "color" : "purple" },
-//  { "st_id":"D", "x_axis": 120, "y_axis": 40, "radius": 4, "color" : "green" },
-//  { "st_id":"E", "x_axis": 150, "y_axis": 20, "radius": 4, "color" : "green" },
-//  { "st_id":"F", "x_axis": 90, "y_axis": 90, "radius": 4, "color" : "red" },
-//  { "st_id":"H", "x_axis": 120, "y_axis": 100, "radius": 4, "color" : "green"},
-//  { "st_id":"G", "x_axis": 90, "y_axis": 120, "radius": 4, "color" : "green" }
-//  ];
-  
-//var edges = [
-//{ "ed_id": "A_B", "x1": 30, "y1": 60, "x2":60, "y2":60, "weight":2},
-//{ "ed_id": "B_C", "x1": 60, "y1": 60, "x2":90, "y2":60, "weight":2},
-//{ "ed_id": "C_D", "x1": 90, "y1": 60, "x2":120, "y2":40, "weight":2},
-//{ "ed_id": "D_E", "x1": 120, "y1": 40, "x2":150, "y2":20, "weight":2},
-//{ "ed_id": "C_F", "x1": 90, "y1": 60, "x2":90, "y2":90, "weight":2},
-//{ "ed_id": "F_G", "x1": 90, "y1": 90, "x2":90, "y2":120, "weight":2},
-//{ "ed_id": "F_H", "x1": 90, "y1": 90, "x2":120, "y2":100, "weight":2},
-//];
-
 var svgContainer = d3.select("body").append("svg")
                                     .attr("width", 1000)
                                     .attr("height", 1000);
 
+// add edges
 var edges = svgContainer.selectAll("line")
-.data(edges)
-.enter()
-.append("line")
-.attr("x1", function (data) { return x(data.x1); })
-.attr("y1", function (data) { return y(data.y1); })
-.attr("x2", function (data) { return x(data.x2); })
-.attr("y2", function (data) { return y(data.y2); })
-.style("stroke", "rgb(6,120,155)")
-.style("stroke-width", 1)
-.style("stroke-opacity", 0.6);
+						.data(edges)
+						.enter()
+						.append("line")
+						.attr("x1", function (data) { return x(data.x1); })
+						.attr("y1", function (data) { return y(data.y1); })
+						.attr("x2", function (data) { return x(data.x2); })
+						.attr("y2", function (data) { return y(data.y2); })
+						.style("stroke", "rgb(6,120,155)")
+						.style("stroke-width", 1)
+						.style("stroke-opacity", 0.6);
 
+// add stations
 var circles = svgContainer.selectAll("circle")
                           .data(stations)
                           .enter()
@@ -66,20 +48,20 @@ var circleAttributes = circles
                        .style("fill", function(d) { return d.color; });
 
 circles.on("mouseover", expandStationSize)
-.on("mouseout", returnStationSizeToNormal)
-.on("mousedown", sourceSelected);
+		.on("mouseout", returnStationSizeToNormal)
+		.on("mousedown", sourceSelected);
 
 
 function expandStationSize()
 {
-d3.select(this).attr("r", 6)
-.style("fill", "black");
+	d3.select(this).attr("r", 6)
+	.style("fill", "black");
 }
 
 function returnStationSizeToNormal()
 {
-d3.select(this).attr("r", 2)
-.style("fill", "black");
+	d3.select(this).attr("r", 2)
+	.style("fill", "black");
 }
 
 function animateEdgesWithData(edge_weights)
@@ -89,8 +71,8 @@ function animateEdgesWithData(edge_weights)
 // console.log(edge_weights)
 
 
-var edges = svgContainer.selectAll("line")
-.data(edge_weights);
+	var edges = svgContainer.selectAll("line")
+	.data(edge_weights);
 
 // edges
 // .style("stroke", "rgb(6,120,155)")
@@ -104,10 +86,10 @@ var edges = svgContainer.selectAll("line")
 
 */
 
-edges.transition()
-.duration(300)
-.ease("quad")
-.style("stroke-width", function(data) { return e(data.weight); })
+	edges.transition()
+	.duration(300)
+	.ease("quad")
+	.style("stroke-width", function(data) { return e(data.weight); })
 
 
 }
@@ -116,9 +98,9 @@ function sourceSelected()
 {
 // This is where shit goes down!
 // Get source station
-current_element = d3.select(this);
-source_station_id = current_element.datum().st_id;
-
+	current_element = d3.select(this);
+	source_station_id = current_element.datum().st_id;
+	
 //console.log(current_element.datum().st_id);
 
 //TODO Get data
@@ -138,16 +120,16 @@ source_station_id = current_element.datum().st_id;
 //];
 //var edge_wt = 0; // a global
 
-// todo: move to function
-edge_weight_file = "_data/edges/"+source_station_id+".json";
-//console.log(edge_weight_file);
-d3.json(edge_weight_file, function(json, error)
-{
-  if (error) return console.warn(error);
-  window.edge_wt = json;
-//  console.log(window.edge_wt);
-//  visualizeit();
-});
+	// todo: move to function
+	edge_weight_file = "_data/edges/"+source_station_id+".json";
+	//console.log(edge_weight_file);
+	d3.json(edge_weight_file, function(json, error)
+	{
+	  if (error) return console.warn(error);
+	  window.edge_wt = json;
+	//  console.log(window.edge_wt);
+	//  visualizeit();
+	});
 /*
 
 // alternatively
@@ -164,7 +146,7 @@ var myjson = '{"name": "flare","children": [{"name": "analytics","children": [{"
 
 //TODO reload data
 //console.log(window.edge_wt);
-animateEdgesWithData(window.edge_wt);
+	animateEdgesWithData(window.edge_wt);
 //TODO reload small multiples
 
 //TODO any clean up
