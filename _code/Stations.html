@@ -2,8 +2,8 @@
 <html>
 <head>
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
-    <script type="text/javascript" src="_data/station.json"></script>
-    <script type="text/javascript" src="_data/edges.json"></script>
+    <script type="text/javascript" src="_data/station.js"></script>
+    <script type="text/javascript" src="_data/edges.js"></script>
     <title>Stations.html</title>
 </head>
 <body>
@@ -52,7 +52,7 @@ var edges = svgContainer.selectAll("line")
 .attr("y2", function (data) { return y(data.y2); })
 .style("stroke", "rgb(6,120,155)")
 .style("stroke-width", 1)
-.style("stroke-opacity", 0.6); 
+.style("stroke-opacity", 0.6);
 
 var circles = svgContainer.selectAll("circle")
                           .data(stations)
