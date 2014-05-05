@@ -40,12 +40,18 @@ var date_sort_asc = function (date1, date2) {
   return 0;
 };
 
+function getDestinations(parsedData) {
+    var destinations = []
+    manipulatedData.forEach(function(timeSeriesDataPoint) {
+      destinations.push(timeSeriesDataPoint.destination);
+    })
+    return destinations
+}
+
 function setUpChart(parsedData) {
-  var destinations = []
-  manipulatedData.forEach(function(timeSeriesDataPoint) {
-         destinations.push(timeSeriesDataPoint.destination);
-          })
-  color.domain(destinations);
+  var destinations = getDestinations(parsedData)
+  color.domain(destinations)
+  setXYDomains(parsedData);
 }
 
 function setXYDomains(parsedData) {
@@ -87,8 +93,6 @@ d3.csv("_data/data-fake.csv", function(error, data) {
   // parse date that is key in each dictionary (for each dictionary, get ridership key, ridership.get all keys function)
 
 
-
-
   var cities = color.domain().map(function(name) {
     return {
       name: name,
@@ -97,27 +101,15 @@ d3.csv("_data/data-fake.csv", function(error, data) {
       })
     };
   });
-  console.log(color.domain())
 
-// format in a useful way (convert datatypes)
+    setUpChart(manipulatedData)
 
-// do something with the data (use it to draw lines)
-
-
-setXYDomains(manipulatedData)
-setUpChart()
-
-//  y.domain([
-//    d3.min(cities, function(c) { return d3.min(c.values, function(v) { return v.temperature; }); }),
-//    d3.max(cities, function(c) { return d3.max(c.values, function(v) { return v.temperature; }); })
-//  ]);
-
-  svg.append("g")
+    svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
       .call(xAxis);
 
-  svg.append("g")
+    svg.append("g")
       .attr("class", "y axis")
       .call(yAxis)
     .append("text")
