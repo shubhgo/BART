@@ -40,9 +40,13 @@ var date_sort_asc = function (date1, date2) {
   return 0;
 };
 
-d3.csv("_data/data-fake.csv", function(error, data) { 
-  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
-//have a color for every destination station in sample-ts file
+function setUpChart(parsedData) {
+  var destinations = []
+  manipulatedData.forEach(function(timeSeriesDataPoint) {
+         destinations.push(timeSeriesDataPoint.destination);
+          })
+  color.domain(destinations);
+}
 
 function setXYDomains(parsedData) {
     var dates = Object.keys(parsedData[0].ridership);
@@ -68,26 +72,21 @@ function setXYDomains(parsedData) {
         })
     })
 
-
-
-// for each object
-//  get ridership values
-    // check if it's bigger than current max
-    // find min/max, set ydomain
-
-    console.log(parsedData[0].ridership)
-
     y.domain([
         d3.min([0]),
         d3.max([maxRiders])
         ]);
 }
 
+d3.csv("_data/data-fake.csv", function(error, data) {
+
 
   data.forEach(function(d) {
     d.date = parseDate(d.date);
   });
   // parse date that is key in each dictionary (for each dictionary, get ridership key, ridership.get all keys function)
+
+
 
 
   var cities = color.domain().map(function(name) {
@@ -98,12 +97,15 @@ function setXYDomains(parsedData) {
       })
     };
   });
+  console.log(color.domain())
 
 // format in a useful way (convert datatypes)
 
 // do something with the data (use it to draw lines)
 
-  setXYDomains(manipulatedData)
+
+setXYDomains(manipulatedData)
+setUpChart()
 
 //  y.domain([
 //    d3.min(cities, function(c) { return d3.min(c.values, function(v) { return v.temperature; }); }),
@@ -127,7 +129,7 @@ function setXYDomains(parsedData) {
 
   var city = svg.selectAll(".city")
       .data(cities)
-    .enter().append("g")
+      .enter().append("g")
       .attr("class", "city");
 
   city.append("path")
