@@ -3,6 +3,7 @@ var margin = {top: 20, right: 80, bottom: 30, left: 50},
     height = 500 - margin.top - margin.bottom;
 
 var parseDate = d3.time.format("%Y%m%d").parse;
+var parseTimeSeriesDate = d3.time.format("%m/%Y").parse;
 
 var x = d3.time.scale()
     .range([0, width]);
@@ -31,12 +32,40 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("_data/data-fake.csv", function(error, data) {
+var manipulatedData = timeSeriesLines
+
+var date_sort_asc = function (date1, date2) {
+  if (date1 > date2) return 1;
+  if (date1 < date2) return -1;
+  return 0;
+};
+
+d3.csv("_data/data-fake.csv", function(error, data) { 
   color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+//have a color for every destination station in sample-ts file
+
+function setXDomain(parsedData) {
+    console.log(parsedData)
+
+    var dates = Object.keys(parsedData[0].ridership);
+    for (var i = 0; i < dates.length; i++)
+    {
+        dates[i] = parseTimeSeriesDate(dates[i])
+    }
+    dates = dates.sort(date_sort_asc)
+
+    x.domain([
+        d3.min(dates),
+        d3.max(dates)
+      ]);
+}
+
 
   data.forEach(function(d) {
     d.date = parseDate(d.date);
   });
+  // parse date that is key in each dictionary (for each dictionary, get ridership key, ridership.get all keys function)
+
 
   var cities = color.domain().map(function(name) {
     return {
@@ -47,7 +76,12 @@ d3.csv("_data/data-fake.csv", function(error, data) {
     };
   });
 
+// format in a useful way (convert datatypes)
+
+// do something with the data (use it to draw lines)
+
   x.domain(d3.extent(data, function(d) { return d.date; }));
+        setXDomain(manipulatedData)
 
   y.domain([
     d3.min(cities, function(c) { return d3.min(c.values, function(v) { return v.temperature; }); }),
