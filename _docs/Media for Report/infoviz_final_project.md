@@ -1,4 +1,4 @@
-#Infoviz final project
+# Infoviz final project
 
 # Design goals
 - Content over controls:
@@ -36,3 +36,6 @@
 - **log** of values
 - Pricing data
 - use animation to show the number of users dropping out at each station
+
+# Sols Feedback
+- is we add another map on the right with google traffic data and then clicking on stations show if that line did not exist then how would it affect the traffic and congestion or if more riders adopt a line then how would that reduce traffic congestion.
