@@ -5,6 +5,7 @@
     <!-- loads variables stations and edges -->
     <script type="text/javascript" src="_data/stations.js"></script>
     <script type="text/javascript" src="_data/edges.js"></script>
+    <script type="text/javascript" src="_js/helper.js"></script>
     <title>Stations.html</title>
 </head>
 <body>
@@ -19,8 +20,8 @@ var y = d3.scale.linear().domain([0, 25]).range([0, 600]);
 var e = d3.scale.linear().domain([0, 4000]).range([0, 20]);
 
 var svgContainer = d3.select("body").append("svg")
-                                    .attr("width", 1000)
-                                    .attr("height", 1000);
+                                    .attr("width", 960)
+                                    .attr("height", 620);
 
 // add edges
 var edges = svgContainer.selectAll("line")
@@ -156,10 +157,33 @@ function reloadTimeSeriesWithData()
 {
 }
 
-function scrubbedToTime(time)
+var coordinates = [0, 0];
+function scrubbedToTime()
 {
 	// todo called when the user scrubs the time line
 	// in the time series visualization
+	coordinates = d3.mouse(this);
+	var x = coordinates[0];
+	var y = coordinates[1];
+//	console.log(x);
+	// TODO: these should not be hard coded
+	// TODO: some of them can be made one time computations
+	years = ['2006','2007','2008','2009','2010','2011','2012','2013'];
+	n_years = years.length;
+	months = range(1,13);
+	n_months = 12;
+	
+	var time_scale = d3.scale.linear().domain([50, 910]).range([0, n_years*n_months]);
+	x_time_scale = Math.floor(time_scale(x))
+//	console.log(x_time_scale);
+	selected_month = x_time_scale%n_months;
+	selected_year = Math.floor(x_time_scale/n_months);
+	console.log(years[selected_year]);
+	console.log(months[selected_month]);
+	// x-> 50 to 830
+	
+	// TODO: update map viz here
+	
 }
 
 function destinationSelected()
@@ -173,5 +197,9 @@ function regionSelected()
 	// todo region selected
 }
 </script>
+
+<script src="_data/sample-ts.js"></script>
+<script src="_js/time-series.js"></script>
+
 </body>
 </html>
