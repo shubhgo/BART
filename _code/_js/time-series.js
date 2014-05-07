@@ -1,4 +1,4 @@
-var margin = {top: 20, right: 80, bottom: 30, left: 50},
+var margin = {top: 20, right: 50, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -31,6 +31,18 @@ var svg = d3.select("body").append("svg")
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var rectangle = svg.append("rect")
+	.attr("x", margin.left)
+	.attr("y", margin.top)
+	.attr("width", width)
+	.attr("height", height)
+	.style("stroke", "rgb(6,120,155)")
+	.style("stroke-width", 1)
+	.style("stroke-opacity", 0.6)
+	.style("fill","white");
+
+rectangle.on("mousemove", scrubbedToTime);
 
 var manipulatedData = timeSeriesLines
 
