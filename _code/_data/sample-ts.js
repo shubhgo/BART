@@ -32,7 +32,7 @@ var timeSeriesLines = [
       "1/2013": 125,
       "2/2013": 124
     },
-    "destination": "    ",
+    "destination": "NB",
     "weekday": true
   },
   {
