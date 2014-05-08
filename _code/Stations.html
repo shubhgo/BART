@@ -12,6 +12,15 @@
 <div id="viz"></div>
     
 <script type="text/javascript">
+/* Global Filter Variables */
+var current_source = "";
+var current_destination = "";//For Later
+var current_region = "";//For Later
+var current_time = "";
+var default_time = 'Deceber_2013';
+var current_weekend = "";//For Later
+
+
 var edge_wt=0;
 
 //scales
@@ -48,6 +57,7 @@ var circleAttributes = circles
                        .attr("r", function (d) { return d.radius; })
                        .style("fill", function(d) { return d.color; });
 
+
 circles.on("mouseover", expandStationSize)
 		.on("mouseout", returnStationSizeToNormal)
 		.on("mousedown", sourceSelected);
@@ -64,7 +74,6 @@ function returnStationSizeToNormal()
 	d3.select(this).attr("r", 2)
 	.style("fill", "black");
 }
-
 
 function sourceSelected()
 {
@@ -109,6 +118,29 @@ function sourceSelected()
 }
 
 
+/* 
+reanimated the map viz with the given filters 
+Called by:
+sourceSelected()
+scrubbedToTime()
+*/
+function mapFiltersChanged(source, destination, region, time, weekend)
+{
+	// TODO:(Later) better support for other filters
+	if (source != window.current_source)
+	{
+		// source changed
+		/* realod data*/
+		/* change time */
+		/* reanimate map */
+	}else if (time != window.current_time)
+	{
+		// Point in time changed
+		/* reanimate map */
+		
+	}
+}
+
 function loadEdgeWeightsForStation(station)
 {
 }
@@ -119,13 +151,13 @@ function loadTimeSeriesDataForStation(station)
 
 function animateMapEdgesWithData(edge_weights)
 {
-	console.log("animateMapEdgesWithData called");
+	//	console.log("animateMapEdgesWithData called");
 
 	//	console.log(edge_weights)
 	 
 	var edges = svgContainer.selectAll("line")
 	.data(edge_weights);
-	console.log(edges);
+	// console.log(edges);
 
 	edges.transition()
 	.duration(300)
@@ -165,22 +197,21 @@ function scrubbedToTime()
 	coordinates = d3.mouse(this);
 	var x = coordinates[0];
 	var y = coordinates[1];
-//	console.log(x);
+	//	console.log(x);
 	// TODO: these should not be hard coded
 	// TODO: some of them can be made one time computations
 	years = ['2006','2007','2008','2009','2010','2011','2012','2013'];
 	n_years = years.length;
-	months = range(1,13);
+	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	// TODO: change month key to numbers
+	//	months = range(1,13);
 	n_months = 12;
 	
 	var time_scale = d3.scale.linear().domain([50, 910]).range([0, n_years*n_months]);
 	x_time_scale = Math.floor(time_scale(x))
-//	console.log(x_time_scale);
 	selected_month = x_time_scale%n_months;
 	selected_year = Math.floor(x_time_scale/n_months);
-	console.log(years[selected_year]);
-	console.log(months[selected_month]);
-	// x-> 50 to 830
+	console.log(months[selected_month]+'_'+years[selected_year]);
 	
 	// TODO: update map viz here
 	
