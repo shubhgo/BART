@@ -17,7 +17,7 @@ var current_source = "";
 var current_destination = "";//For Later
 var current_region = "";//For Later
 var current_time = "";
-var default_time = 'Deceber_2013';
+var default_time = 'December_2013';
 var current_weekend = "";//For Later
 
 
@@ -82,19 +82,9 @@ function sourceSelected()
 	current_element = d3.select(this);
 	source_station_id = current_element.datum().st_id;
 	
+	mapFiltersChanged(source_station_id, null, null, null, window.default_time, null);
 	//console.log(current_element.datum().st_id);
 
-	/* Get data */
-	// url localhost:27608/edges?datetime=jan2014&source=source_station_id
-	// TODO: move to function
-	edge_weight_file = "_data/edges/"+source_station_id+".json";
-	//	console.log(edge_weight_file);
-	d3.json(edge_weight_file, function(json, error)
-	{
-		if (error) return console.warn(error);
-		window.edge_wt = json;
-	//	  console.log(window.edge_wt);
-	});
 	
 	/*
 	// alternatively
@@ -111,7 +101,7 @@ function sourceSelected()
 	
 	/* TODO reload data */
 	//console.log(window.edge_wt);
-	animateMapEdgesWithData(window.edge_wt);
+	
 	/* TODO reload small multiples */
 	
 	/* TODO any clean up */
@@ -129,15 +119,38 @@ function mapFiltersChanged(source, destination, region, time, weekend)
 	// TODO:(Later) better support for other filters
 	if (source != window.current_source)
 	{
-		// source changed
+		console.log('source station changed to: ' + source);
+		/* update filter */
+		window.current_source = source;
 		/* realod data*/
-		/* change time */
-		/* reanimate map */
+		// url localhost:27608/edges?datetime=jan2014&source=source_station_id
+		edge_weight_file = "_data/edges/"+source_station_id+".json";
+		
+		d3.json(edge_weight_file, function(json, error){
+			if (error) return console.warn('Error: '+error);
+			
+			window.edge_wt = json;
+			/* change time */
+			window.current_time = default_time;
+			/* reanimate map */
+			// console.log(window.edge_wt);
+			current_time_data = window.edge_wt[window.current_time];
+			// console.log(current_time_data);
+			animateMapEdgesWithData(current_time_data);
+			// console.log(window.edge_wt);
+		});	
+//		animateMapEdgesWithData(current_time_data);
 	}else if (time != window.current_time)
 	{
 		// Point in time changed
 		/* reanimate map */
-		
+		console.log('time changed to: ' + time);
+		/* update filters */
+		window.current_time = time;
+		/* animate map with new data */
+		current_time_data = window.edge_wt[window.current_time];
+		// console.log(current_time_data);
+		animateMapEdgesWithData(current_time_data);
 	}
 }
 
@@ -153,7 +166,7 @@ function animateMapEdgesWithData(edge_weights)
 {
 	//	console.log("animateMapEdgesWithData called");
 
-	//	console.log(edge_weights)
+//	console.log(edge_weights);
 	 
 	var edges = svgContainer.selectAll("line")
 	.data(edge_weights);
@@ -211,8 +224,11 @@ function scrubbedToTime()
 	x_time_scale = Math.floor(time_scale(x))
 	selected_month = x_time_scale%n_months;
 	selected_year = Math.floor(x_time_scale/n_months);
-	console.log(months[selected_month]+'_'+years[selected_year]);
+	time_period_key = months[selected_month]+'_'+years[selected_year];
 	
+	console.log(time_period_key);
+	
+	mapFiltersChanged(window.current_source, null, null, time_period_key, null);
 	// TODO: update map viz here
 	
 }
