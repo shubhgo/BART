@@ -84,8 +84,23 @@ function setXYDomains(parsedData) {
         ]);
 }
 
-d3.csv("_data/data-fake.csv", function(error, data) {
+function lineData(parsedData) {
+    var destinationLines = [];
+    for (var i = 0; i < parsedData.length; i++) {
+        var dateRiders = [];
+        var dates = Object.keys(parsedData[i].ridership);
+        var riders = dates.map(function(v) {
+            return parsedData[i].ridership[v];
+            });
+        for (var j = 0; j < dates.length; j++) {
+            dateRiders.push({date: parseTimeSeriesDate(dates[j]), riderNumber: riders[j]})
+            }
+        destinationLines.push({destination:parsedData[i].destination, line: dateRiders});
+        }
+}
 
+
+d3.csv("_data/data-fake.csv", function(error, data) {
 
   data.forEach(function(d) {
     d.date = parseDate(d.date);
@@ -117,7 +132,7 @@ d3.csv("_data/data-fake.csv", function(error, data) {
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Temperature (ºF)");
+      .text("Riders");
 
   var city = svg.selectAll(".city")
       .data(cities)
