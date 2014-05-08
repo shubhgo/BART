@@ -24,7 +24,7 @@ var yAxis = d3.svg.axis()
 var line = d3.svg.line()
     .interpolate("basis")
     .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.temperature); });
+    .y(function(d) { return y(d.riderNumber); });
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -56,15 +56,19 @@ function setUpChart(parsedData) {
 
 function setXYDomains(parsedData) {
     var dates = Object.keys(parsedData[0].ridership);
+
     for (var i = 0; i < dates.length; i++)
     {
         dates[i] = parseTimeSeriesDate(dates[i])
     }
     dates = dates.sort(date_sort_asc)
+    console.log(dates)
 
     x.domain([
         d3.min(dates),
         d3.max(dates)
+
+
       ]);
 
     var maxRiders = 0;
@@ -89,16 +93,22 @@ function lineData(parsedData) {
     for (var i = 0; i < parsedData.length; i++) {
         var dateRiders = [];
         var dates = Object.keys(parsedData[i].ridership);
+        
         var riders = dates.map(function(v) {
             return parsedData[i].ridership[v];
             });
         for (var j = 0; j < dates.length; j++) {
-            dateRiders.push({date: parseTimeSeriesDate(dates[j]), riderNumber: riders[j]})
+            //parseTimeSeriesDate(dates[j]);
+            dateRiders.push({date: (parseTimeSeriesDate(dates[j])), riderNumber: riders[j]});
             }
-        destinationLines.push({destination:parsedData[i].destination, line: dateRiders});
+        destinationLines.push({destination:parsedData[i].destination, lineDataPoint: dateRiders});
+
         }
+    return destinationLines
 }
 
+var destinations = lineData(manipulatedData)
+console.log('length is: '+destinations.length)
 
 d3.csv("_data/data-fake.csv", function(error, data) {
 
@@ -134,20 +144,21 @@ d3.csv("_data/data-fake.csv", function(error, data) {
       .style("text-anchor", "end")
       .text("Riders");
 
-  var city = svg.selectAll(".city")
-      .data(cities)
+  var destination = svg.selectAll(".destination")
+      .data(destinations)
       .enter().append("g")
-      .attr("class", "city");
+      .attr("class", "destination");
 
-  city.append("path")
+  destination.append("path")
       .attr("class", "line")
-      .attr("d", function(d) { return line(d.values); })
-      .style("stroke", function(d) { return color(d.name); });
+      .attr("d", function(d) {
+        return line(d.lineDataPoint); })
+      .style("stroke", function(d) { return color(d.destination); });
 
-  city.append("text")
-      .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
-      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
+  destination.append("text")
+      .datum(function(d) { return {name: d.destination, value: d.lineDataPoint[d.lineDataPoint.length - 1]}; })
+      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.riderNumber) + ")"; })
       .attr("x", 3)
       .attr("dy", ".35em")
-      .text(function(d) { return d.name; });
+      .text(function(d) { return d.destination; });
 });
