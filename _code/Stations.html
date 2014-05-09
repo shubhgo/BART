@@ -165,7 +165,8 @@ function mapFiltersChanged(source, destination, region, time, weekend)
 			// console.log(window.edge_wt);
 			current_time_data = window.edge_wt[window.current_time];
 			// console.log(current_time_data);
-			animateMapEdgesWithData(current_time_data);
+			var duration = 1000;
+			animateMapEdgesWithData(current_time_data, duration);
 			// console.log(window.edge_wt);
 		});	
 //		animateMapEdgesWithData(current_time_data);
@@ -179,7 +180,8 @@ function mapFiltersChanged(source, destination, region, time, weekend)
 		/* animate map with new data */
 		current_time_data = window.edge_wt[window.current_time];
 		// console.log(current_time_data);
-		animateMapEdgesWithData(current_time_data);
+		var duration = 500;
+		animateMapEdgesWithData(current_time_data, duration);
 	}
 }
 
@@ -191,7 +193,7 @@ function loadTimeSeriesDataForStation(station)
 {
 }
 
-function animateMapEdgesWithData(edge_weights)
+function animateMapEdgesWithData(edge_weights,duration)
 {
 	//	console.log("animateMapEdgesWithData called");
 
@@ -202,7 +204,7 @@ function animateMapEdgesWithData(edge_weights)
 	// console.log(edges);
 
 	edges.transition()
-	.duration(300)
+	.duration(duration)
 	.ease("quad")
 	.style("stroke-width", function(data) { return e(data.weight); });
 	
@@ -260,6 +262,8 @@ function scrubbedToTime()
 	mapFiltersChanged(window.current_source, null, null, time_period_key, null);
 	// TODO: update map viz here
 	
+	
+	moveTicker(x);
 }
 
 function destinationSelected()

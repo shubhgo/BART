@@ -133,16 +133,35 @@ function animateTimeSeriesWithData(time_series_data)
 	  .data(time_series_data);
 	
 	destination.transition()
-		.duration(300)
+		.duration(1000)
 		.ease("quad")
 		.select(".line")
 		.attr("d", function(d) {
 		  return line(d.ridership); });
-	// animate time viz
-//	var ts_lines = destination.selectAll(".line");
-	
-//	ts_lines.transition()
-//	.duration(300)
-	
+}
 
+svg.selectAll(".ticker")
+	.data([{'x1':60,'x2':60,'y1':0,'y2':height}])
+	.enter()
+	.append("line")
+	.attr("class", "ticker")
+	.attr("x1", function (data) { return data.x1; })
+	.attr("y1", function (data) { return data.y1; })
+	.attr("x2", function (data) { return data.x2; })
+	.attr("y2", function (data) { return data.y2; })
+	.style("stroke", "rgb(6,120,155)")
+	.style("stroke-width", 1)
+	.style("stroke-opacity", 0.6);
+
+
+function moveTicker(x)
+{
+	var ticker_data = [{'x1':x,'x2':x,'y1':0,'y2':height}];
+	
+	var ticker = svg.selectAll(".ticker")
+		.data(ticker_data)
+		.attr("x1", function (data) { return data.x1; })
+		.attr("y1", function (data) { return data.y1; })
+		.attr("x2", function (data) { return data.x2; })
+		.attr("y2", function (data) { return data.y2; })
 }
