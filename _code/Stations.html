@@ -2,35 +2,66 @@
 <html>
 <head>
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    
     <!-- loads variables stations and edges -->
     <script type="text/javascript" src="_data/stations.js"></script>
     <script type="text/javascript" src="_data/edges.js"></script>
     <script type="text/javascript" src="_js/helper.js"></script>
     <title>Stations.html</title>
-    <style>
-    
-    body {
-      font: 10px sans-serif;
-    }
-    
-    .axis path,
-    .axis line {
-      fill: none;
-      stroke: #000;
-      shape-rendering: crispEdges;
-    }
-    
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
 /*    .x.axis path {
-      display: none;
-    }*/
+  display: none;
+}*/
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
     
-    .line {
-      fill: none;
-      stroke: steelblue;
-      stroke-width: 1.5px;
-    }
     
-    </style>
+</style>
     
 </head>
 <body>
@@ -66,6 +97,16 @@ svg_map = svg_container
 	.append("g")
 	.attr("transform", "translate(" + 152 + "," + -10 + ")");
 // add edges
+
+var tip_circle = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<span style='color:white'>" + d.name + "</span>";
+  });
+
+svg_map.call(tip_circle);
+
 svg_map.selectAll("line")
 	.data(edges)
 	.enter()
@@ -75,7 +116,7 @@ svg_map.selectAll("line")
 	.attr("x2", function (data) { return x_map(data.x2); })
 	.attr("y2", function (data) { return y_map(data.y2); })
 	.style("stroke", "rgb(6,120,155)")
-	.style("stroke-width", 1)
+	.style("stroke-width", 4)
 	.style("stroke-opacity", 0.6);
 
 // add stations
@@ -91,9 +132,11 @@ circles
 	.style("fill", function(d) { return d.color; });
 
 
-circles.on("mouseover", expandStationSize)
-	.on("mouseout", returnStationSizeToNormal)
+circles.on('mouseover', tip_circle.show)
+	.on('mouseout', tip_circle.hide)
 	.on("mousedown", sourceSelected);
+//.on("mouseover", expandStationSize)
+//	.on("mouseout", returnStationSizeToNormal)
 
 
 function expandStationSize()

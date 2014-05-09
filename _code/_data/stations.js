@@ -5,7 +5,7 @@ var stations = [
     "x_axis":16,
     "y_axis":13,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region" : "east bay"
   },
   {
@@ -14,7 +14,7 @@ var stations = [
     "x_axis":5,
     "y_axis":17,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region" : "peninsula"
   },
   {
@@ -23,7 +23,7 @@ var stations = [
     "x_axis":16,
     "y_axis":12,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region" : "east bay"
   },
   {
@@ -32,7 +32,7 @@ var stations = [
     "x_axis":4,
     "y_axis":18,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region" : "peninsula"
   },
   {
@@ -41,7 +41,7 @@ var stations = [
     "x_axis":15,
     "y_axis":10,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region" : "east bay"
   },
   {
@@ -50,7 +50,7 @@ var stations = [
     "x_axis":2,
     "y_axis":20,
     "color":"black",
-    "radius":2, 
+    "radius":4, 
     "region" : "peninsula"
   },
   {
@@ -59,7 +59,7 @@ var stations = [
     "x_axis":20,
     "y_axis":18,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -68,7 +68,7 @@ var stations = [
     "x_axis":21,
     "y_axis":18,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -77,7 +77,7 @@ var stations = [
     "x_axis":6,
     "y_axis":16,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"peninsula"
   },
   {
@@ -86,7 +86,7 @@ var stations = [
     "x_axis":18,
     "y_axis":16,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -95,7 +95,7 @@ var stations = [
     "x_axis":2,
     "y_axis":22,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -104,7 +104,7 @@ var stations = [
     "x_axis":22,
     "y_axis":5,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -113,7 +113,7 @@ var stations = [
     "x_axis":1,
     "y_axis":21,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"peninsula"
   },
   {
@@ -122,7 +122,7 @@ var stations = [
     "x_axis":14,
     "y_axis":9,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -131,7 +131,7 @@ var stations = [
     "x_axis":22,
     "y_axis":18,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -140,7 +140,7 @@ var stations = [
     "x_axis":11,
     "y_axis":6,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -149,7 +149,7 @@ var stations = [
     "x_axis":12,
     "y_axis":7,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -158,7 +158,7 @@ var stations = [
     "x_axis":9,
     "y_axis":13,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"peninsula"
   },
   {
@@ -167,7 +167,7 @@ var stations = [
     "x_axis":24,
     "y_axis":22,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -176,7 +176,7 @@ var stations = [
     "x_axis":17,
     "y_axis":15,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -185,7 +185,7 @@ var stations = [
     "x_axis":3,
     "y_axis":19,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"peninsula"
   },
   {
@@ -194,7 +194,7 @@ var stations = [
     "x_axis":21,
     "y_axis":19,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -203,7 +203,7 @@ var stations = [
     "x_axis":19,
     "y_axis":8,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -212,7 +212,7 @@ var stations = [
     "x_axis":16,
     "y_axis":14,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -221,7 +221,7 @@ var stations = [
     "x_axis":16,
     "y_axis":11,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -230,7 +230,7 @@ var stations = [
     "x_axis":5,
     "y_axis":25,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"peninsula"
   },
   {
@@ -239,7 +239,7 @@ var stations = [
     "x_axis":8,
     "y_axis":14,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"peninsula"
   },
   {
@@ -248,7 +248,7 @@ var stations = [
     "x_axis":13,
     "y_axis":8,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -257,7 +257,7 @@ var stations = [
     "x_axis":23,
     "y_axis":4,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -266,7 +266,7 @@ var stations = [
     "x_axis":18,
     "y_axis":9,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -275,7 +275,7 @@ var stations = [
     "x_axis":24,
     "y_axis":3,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -284,7 +284,7 @@ var stations = [
     "x_axis":21,
     "y_axis":6,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -293,7 +293,7 @@ var stations = [
     "x_axis":7,
     "y_axis":15,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -302,7 +302,7 @@ var stations = [
     "x_axis":10,
     "y_axis":5,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -311,7 +311,7 @@ var stations = [
     "x_axis":17,
     "y_axis":10,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -320,7 +320,7 @@ var stations = [
     "x_axis":4,
     "y_axis":24,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"peninsula"
   },
   {
@@ -329,7 +329,7 @@ var stations = [
     "x_axis":19,
     "y_axis":17,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -338,7 +338,7 @@ var stations = [
     "x_axis":22,
     "y_axis":20,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -347,7 +347,7 @@ var stations = [
     "x_axis":3,
     "y_axis":23,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"peninsula"
   },
   {
@@ -356,7 +356,7 @@ var stations = [
     "x_axis":23,
     "y_axis":21,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -365,7 +365,7 @@ var stations = [
     "x_axis":20,
     "y_axis":7,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -374,7 +374,7 @@ var stations = [
     "x_axis":15,
     "y_axis":13,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"east bay"
   },
   {
@@ -383,7 +383,7 @@ var stations = [
     "x_axis":5,
     "y_axis":24,
     "color":"black",
-    "radius":2,
+    "radius":4,
     "region":"peninsula"
   }
 ];
