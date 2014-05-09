@@ -44,14 +44,14 @@ var line = d3.svg.line()
     .y(function(d) { return y(d.ridership); });
 
 
-var svg = d3.select("body").append("svg")
+var svg_ts = d3.select("body").append("svg")
     .attr("width", width + margin_ts.left + margin_ts.right)
     .attr("height", height + margin_ts.top + margin_ts.bottom)
     .append("g")
     .attr("transform", "translate(" + margin_ts.left + "," + margin_ts.top + ")");
 
 
-var rectangle = svg.append("rect")
+var rectangle = svg_ts.append("rect")
 	.attr("x", 0)
 	.attr("y", 0)
 	.attr("width", width)
@@ -86,12 +86,12 @@ function setUpChart(parsedData) {
 
 setUpChart(manipulatedData);
 
-svg.append("g")
+svg_ts.append("g")
   .attr("class", "x axis")
   .attr("transform", "translate(0," + height + ")")
   .call(xAxis);
 
-svg.append("g")
+svg_ts.append("g")
   .attr("class", "y axis")
   .call(yAxis)
   .append("text")
@@ -101,7 +101,7 @@ svg.append("g")
   .style("text-anchor", "end")
   .text("Riders");
 
-var destination = svg.selectAll(".destination")
+var destination = svg_ts.selectAll(".destination")
   .data(manipulatedData)
   .enter().append("g")
   .attr("class", "destination");
@@ -129,7 +129,7 @@ function timeSeriesFiltersChanged(source, destination, region, time, weekend)
 function animateTimeSeriesWithData(time_series_data)
 {
 	// link data
-	var destination = svg.selectAll(".destination")
+	var destination = svg_ts.selectAll(".destination")
 	  .data(time_series_data);
 	
 	destination.transition()
@@ -140,7 +140,7 @@ function animateTimeSeriesWithData(time_series_data)
 		  return line(d.ridership); });
 }
 
-svg.selectAll(".ticker")
+svg_ts.selectAll(".ticker")
 	.data([{'x1':60,'x2':60,'y1':0,'y2':height}])
 	.enter()
 	.append("line")
@@ -158,7 +158,7 @@ function moveTicker(x)
 {
 	var ticker_data = [{'x1':x,'x2':x,'y1':0,'y2':height}];
 	
-	var ticker = svg.selectAll(".ticker")
+	var ticker = svg_ts.selectAll(".ticker")
 		.data(ticker_data)
 		.attr("x1", function (data) { return data.x1; })
 		.attr("y1", function (data) { return data.y1; })

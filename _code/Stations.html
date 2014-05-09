@@ -53,39 +53,39 @@ var x_map = d3.scale.linear().domain([0, 25]).range([0, 400]);
 var y_map = d3.scale.linear().domain([0, 25]).range([0, 600]);
 var e = d3.scale.linear().domain([0, 4000]).range([0, 20]);
 
-var svgContainer = d3.select("body").append("svg")
-                                    .attr("width", 960)
-                                    .attr("height", 620);
+var svg_map = d3.select("body").append("svg")
+	.attr("width", 960)
+	.attr("height", 620);
 
 // add edges
-var edges = svgContainer.selectAll("line")
-						.data(edges)
-						.enter()
-						.append("line")
-						.attr("x1", function (data) { return x_map(data.x1); })
-						.attr("y1", function (data) { return y_map(data.y1); })
-						.attr("x2", function (data) { return x_map(data.x2); })
-						.attr("y2", function (data) { return y_map(data.y2); })
-						.style("stroke", "rgb(6,120,155)")
-						.style("stroke-width", 1)
-						.style("stroke-opacity", 0.6);
+svg_map.selectAll("line")
+	.data(edges)
+	.enter()
+	.append("line")
+	.attr("x1", function (data) { return x_map(data.x1); })
+	.attr("y1", function (data) { return y_map(data.y1); })
+	.attr("x2", function (data) { return x_map(data.x2); })
+	.attr("y2", function (data) { return y_map(data.y2); })
+	.style("stroke", "rgb(6,120,155)")
+	.style("stroke-width", 1)
+	.style("stroke-opacity", 0.6);
 
 // add stations
-var circles = svgContainer.selectAll("circle")
-                          .data(stations)
-                          .enter()
-                          .append("circle");
+var circles = svg_map.selectAll("circle")
+	.data(stations)
+	.enter()
+	.append("circle");
 
-var circleAttributes = circles
-                       .attr("cx", function (d) { return x_map(d.x_axis); })
-                       .attr("cy", function (d) { return y_map(d.y_axis); })
-                       .attr("r", function (d) { return d.radius; })
-                       .style("fill", function(d) { return d.color; });
+circles
+	.attr("cx", function (d) { return x_map(d.x_axis); })
+	.attr("cy", function (d) { return y_map(d.y_axis); })
+	.attr("r", function (d) { return d.radius; })
+	.style("fill", function(d) { return d.color; });
 
 
 circles.on("mouseover", expandStationSize)
-		.on("mouseout", returnStationSizeToNormal)
-		.on("mousedown", sourceSelected);
+	.on("mouseout", returnStationSizeToNormal)
+	.on("mousedown", sourceSelected);
 
 
 function expandStationSize()
@@ -199,7 +199,7 @@ function animateMapEdgesWithData(edge_weights,duration)
 
 //	console.log(edge_weights);
 	 
-	var edges = svgContainer.selectAll("line")
+	var edges = svg_map.selectAll("line")
 	.data(edge_weights);
 	// console.log(edges);
 
