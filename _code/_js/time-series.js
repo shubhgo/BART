@@ -52,8 +52,8 @@ var svg = d3.select("body").append("svg")
 
 
 var rectangle = svg.append("rect")
-	.attr("x", margin.left)
-	.attr("y", margin.top)
+	.attr("x", 0)
+	.attr("y", 0)
 	.attr("width", width)
 	.attr("height", height)
 	.style("stroke", "rgb(6,120,155)")
