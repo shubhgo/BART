@@ -1,5 +1,5 @@
 var margin_ts = {top: 20, right: 50, bottom: 30, left: 50},
-    width = 900 - margin_ts.left - margin_ts.right,
+    width = 899,
     height = 300 - margin_ts.top - margin_ts.bottom;
 
 
@@ -57,9 +57,10 @@ var rectangle = svg_ts.append("rect")
 	.attr("y", 0)
 	.attr("width", width)
 	.attr("height", height)
-//	.style("stroke", "rgb(6,120,155)")
-//	.style("stroke-width", 1)
-//	.style("stroke-opacity", 0.6)
+	.attr("class", "rectangle-time-series")
+	.style("stroke", "#9FBAC5")
+	.style("stroke-width", 1)
+	.style("stroke-opacity", 1)
 	.style("fill","white");
 
 rectangle.on("mousemove", scrubbedToTime);
@@ -125,7 +126,7 @@ destination.append("path")
     .attr("class", "line")
     .attr("d", function(d) {
       return line(d.ridership); })
-    .style("stroke", "#197CE3");
+    .style("stroke", "#619EB5");
 
 function timeSeriesFiltersChanged(source, destination, region, time, weekend)
 {
@@ -160,7 +161,7 @@ function highlightDestinationTimeSeries(dest)
  	destination.select(".line")
 		.style("stroke", function(data) {
 		if (data.destination == dest) {
-			return "#197CE3";
+			return "#619EB5";
 		}else {
 			return "#C8C8C8";
 		}})
@@ -191,18 +192,19 @@ svg_ts.selectAll(".ticker")
 	.style("stroke-width", 1)
 	.style("stroke-opacity", 0.4);
 	
-svg_ts.selectAll(".ticker-yedge")
-	.data([{'x1':800,'x2':800,'y1':0,'y2':height}])
+svg_ts.selectAll(".tickeryedge")
+	.data([{'x1':width,'x2':width,'y1':0,'y2':height}])
 	.enter()
 	.append("line")
-	.attr("class", "ticker")
+	.attr("class", "tickeryedge")
 	.attr("x1", function (data) { return data.x1; })
 	.attr("y1", function (data) { return data.y1; })
 	.attr("x2", function (data) { return data.x2; })
-	.attr("y2", function (data) { return data.y2; })
-	.style("stroke", "black")
-	.style("stroke-width", 1)
-	.style("stroke-opacity", 0.4);
+	.attr("y2", function (data) { return data.y2; });
+//	.style("stroke", "black")
+//	.style("stroke-width", 1)
+//	.style("stroke-opacity", 1);
+//	.style("shape-rendering": "crispEdges");
 
 
 function moveTicker(x)

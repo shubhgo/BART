@@ -2,11 +2,25 @@
 /* ==========================================================================
    Import CSS files
    ========================================================================== */
+.footer-with-names{
+	margin-left: -13px;
+	margin-top: -20px;
+}
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
+  stroke: #9FBAC5;
   shape-rendering: crispEdges;
+}
+.tickeryedge {
+	fill: none;
+	stroke: #9FBAC5;
+	shape-rendering: crispEdges;
+}
+.rectangle-time-series {
+	fill: none;
+	stroke: #9FBAC5;
+	shape-rendering: crispEdges;
 }
 
 /*    .x.axis path {
@@ -275,6 +289,7 @@ width: 940px;
   margin-top: 15px;
   /*border: 1px dotted;*/
   border-color: #000;
+  margin-left: -62px
 }
 .span11 {
   width: 900px;
@@ -282,7 +297,7 @@ width: 940px;
   margin-top: 15px;
   /*border: 1px dotted;*/
   border-color: #000;
-	margin-left: 50px;
+	margin-left: -12px;
 }
 .span10 {
   width: 900px;
@@ -293,7 +308,9 @@ width: 940px;
   padding: 5px;
 }
 .span9 {
-  width: 700px;
+  width: 920px;
+	margin-top: 15px;
+	margin-left: -12px;
 }
 .span8 {
   width: 620px;
@@ -666,7 +683,7 @@ h4 small {
 }
 ul,
 ol {
-  padding: 0;
+  padding: 0 0 0 373px;
   margin: 0 0 10px 25px;
 }
 ul ul,
@@ -5312,7 +5329,7 @@ body {
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f7f7f7), to(#ffffff));
   background-image: -webkit-linear-gradient(top, #f7f7f7, #ffffff);
   background-image: -o-linear-gradient(top, #f7f7f7, #ffffff); 
-  background-image: url('../img/bart_ticket_light.png');
+  /*background-image: url('../img/bart_ticket_light.png');*/
   background-repeat: no-repeat;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff7f7f7', endColorstr='#ffffffff', GradientType=0); 
   height: 100%;
