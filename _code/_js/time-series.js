@@ -44,7 +44,7 @@ var line = d3.svg.line()
     .y(function(d) { return y(d.ridership); });
 
 
-var svg_ts = d3.select("body").append("svg")
+var svg_ts = d3.select(".span12").append("svg")
     .attr("width", width + margin_ts.left + margin_ts.right)
     .attr("height", height + margin_ts.top + margin_ts.bottom)
     .append("g")

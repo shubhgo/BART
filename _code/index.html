@@ -10,6 +10,10 @@
       <link rel="stylesheet" href="css/main.css">
 
       <script src="js/vendor/modernizr-2.6.1.min.js"></script>
+      <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+      <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+      <script type="text/javascript" src="_data/stations.js"></script>
+      <script type="text/javascript" src="_data/edges.js"></script>
   </head>
   <body>
     <!--[if lt IE 7]>
@@ -36,11 +40,11 @@
     <div class="container" role="main">
 	
       <div class="span11">
-			<img src="img/map_resize.png" alt="placeholder" width="900" height="500">
+			<!--<img src="img/map_resize.png" alt="placeholder" width="900" height="500">-->
 	  </div>
 
       <div class="span12">
-         	<img src="img/series_resize.png" alt="placeholder" width="900" height="300">
+         	<!--<img src="img/series_resize.png" alt="placeholder" width="900" height="300">-->
          
           
       </div>
@@ -59,5 +63,278 @@
 
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
+    <script type="text/javascript">
+    /* Global Filter Variables */
+    var current_source = "";
+    var current_destination = "";//For Later
+    var current_region = "";//For Later
+    var current_time = "";
+    var default_time = 'December_2013';
+    var current_weekend = "";//For Later
+    
+    
+    var edge_wt=0;
+    
+    //scales
+    var x_map = d3.scale.linear().domain([0, 25]).range([0, 500]);
+    var y_map = d3.scale.linear().domain([0, 25]).range([0, 500]);
+    var e = d3.scale.linear().domain([0, 4000]).range([0, 20]);
+    
+    var svg_container = d3.select(".span11").append("svg")
+    	.attr("width", 900)
+    	.attr("height", 500)
+    
+    svg_container.append("image")
+        .attr("xlink:href", "img/map.png")
+        .attr("width", 900)
+        .attr("height", 500);
+    
+    svg_map = svg_container
+    	.append("g")
+    	.attr("transform", "translate(" + 152 + "," + -10 + ")");
+    // add edges
+    
+    var tip_circle = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(function(d) {
+        return "<span style='color:white'>" + d.name + "</span>";
+      });
+    
+    svg_map.call(tip_circle);
+    
+    svg_map.selectAll("line")
+    	.data(edges)
+    	.enter()
+    	.append("line")
+    	.attr("x1", function (data) { return x_map(data.x1); })
+    	.attr("y1", function (data) { return y_map(data.y1); })
+    	.attr("x2", function (data) { return x_map(data.x2); })
+    	.attr("y2", function (data) { return y_map(data.y2); })
+    	.style("stroke", "rgb(6,120,155)")
+    	.style("stroke-width", 4)
+    	.style("stroke-opacity", 0.6);
+    
+    // add stations
+    var circles = svg_map.selectAll("circle")
+    	.data(stations)
+    	.enter()
+    	.append("circle");
+    
+    circles
+    	.attr("cx", function (d) { return x_map(d.x_axis); })
+    	.attr("cy", function (d) { return y_map(d.y_axis); })
+    	.attr("r", function (d) { return d.radius; })
+    	.style("fill", function(d) { return d.color; });
+    
+    
+    circles.on('mouseover.source', tip_circle.show)
+    	.on('mouseover.dst', dstSelected)
+    	.on('mouseout', tip_circle.hide)
+    	.on('mousedown', sourceSelected);
+    
+    //.on("mouseover", expandStationSize)
+    //.on("mouseout", returnStationSizeToNormal)
+    
+    function dstSelected()
+    {
+    	// TODO highlight
+    	current_element = d3.select(this);
+    	var destination = current_element.datum().st_id;
+    	highlightDestinationTimeSeries(destination);
+    }
+    
+    function expandStationSize()
+    {
+    	d3.select(this).attr("r", 6)
+    	.style("fill", "black");
+    }
+    
+    function returnStationSizeToNormal()
+    {
+    	d3.select(this).attr("r", 2)
+    	.style("fill", "black");
+    }
+    
+    function sourceSelected()
+    {
+    	// This is where shit goes down!
+    	// Get source station
+    	current_element = d3.select(this);
+    	source_station_id = current_element.datum().st_id;
+    	
+    	/* update the map */
+    	mapFiltersChanged(source_station_id, null, null, null, window.default_time, null);
+    	
+    	/* update the time series */
+    	timeSeriesFiltersChanged(source_station_id, null, null, null, window.default_time, null);
+    	//console.log(current_element.datum().st_id);
+    
+    	
+    	/*
+    	// alternatively
+    	var myjson = '{"name": "flare","children": [{"name": "analytics","children": [{"name": "cluster","children": [{"name": "MergeEdge", "size": 10 }]}]}]}';
+    	
+    	// d3.json("/path/flare.json", function(json) { #delete this line
+    	
+    	    json = JSON.parse( myjson ); //add this line
+    	
+    	    //rendering logic here
+    	
+    	//} #delete this line
+    	*/
+    	
+    	/* TODO reload data */
+    	//console.log(window.edge_wt);
+    	
+    	/* TODO reload small multiples */
+    	
+    	/* TODO any clean up */
+    }
+    
+    
+    /* 
+    reanimated the map viz with the given filters 
+    Called by:
+    sourceSelected()
+    scrubbedToTime()
+    */
+    function mapFiltersChanged(source, destination, region, time, weekend)
+    {
+    	// TODO:(Later) better support for other filters
+    	if (source != window.current_source)
+    	{
+    //		console.log('source station changed to: ' + source);
+    		/* update filter */
+    		window.current_source = source;
+    		/* realod data*/
+    		// url localhost:27608/edges?datetime=jan2014&source=source_station_id
+    		edge_weight_file = "_data/edges/"+source_station_id+".json";
+    		
+    		d3.json(edge_weight_file, function(json, error){
+    			if (error) return console.warn('Error: '+error);
+    			
+    			window.edge_wt = json;
+    			/* change time */
+    			window.current_time = default_time;
+    			/* reanimate map */
+    			// console.log(window.edge_wt);
+    			current_time_data = window.edge_wt[window.current_time];
+    			// console.log(current_time_data);
+    			var duration = 1000;
+    			animateMapEdgesWithData(current_time_data, duration);
+    			// console.log(window.edge_wt);
+    		});	
+    //		animateMapEdgesWithData(current_time_data);
+    	}else if (time != window.current_time)
+    	{
+    		// Point in time changed
+    		/* reanimate map */
+    //		console.log('time changed to: ' + time);
+    		/* update filters */
+    		window.current_time = time;
+    		/* animate map with new data */
+    		current_time_data = window.edge_wt[window.current_time];
+    		// console.log(current_time_data);
+    		var duration = 100;
+    		animateMapEdgesWithData(current_time_data, duration);
+    	}
+    }
+    
+    function loadEdgeWeightsForStation(station)
+    {
+    }
+    
+    function loadTimeSeriesDataForStation(station)
+    {
+    }
+    
+    function animateMapEdgesWithData(edge_weights,duration)
+    {
+    	//	console.log("animateMapEdgesWithData called");
+    
+    //	console.log(edge_weights);
+    	 
+    	var edges = svg_map.selectAll("line")
+    	.data(edge_weights);
+    	// console.log(edges);
+    
+    	edges.transition()
+    	.duration(duration)
+    	.ease("quad")
+    	.style("stroke-width", function(data) { return e(data.weight); });
+    	
+    	/*
+    	// for looping transitions
+    	function animateFirstStep(){
+    	    d3.select(this)
+    	      .transition()
+    	        .delay(0)
+    	        .duration(1000)
+    	        .attr("r", 10)
+    	        .each("end", animateSecondStep);
+    	};
+    	
+    	function animateSecondStep(){
+    	    d3.select(this)
+    	      .transition()
+    	        .duration(1000)
+    	        .attr("r", 40);
+    	};
+    	
+    	*/
+    }
+    
+    function reloadTimeSeriesWithData()
+    {
+    }
+    
+    var coordinates = [0, 0];
+    function scrubbedToTime()
+    {
+    	// todo called when the user scrubs the time line
+    	// in the time series visualization
+    	coordinates = d3.mouse(this);
+    	var x = coordinates[0];
+    	var y = coordinates[1];
+    	//	console.log(x);
+    	// TODO: these should not be hard coded
+    	// TODO: some of them can be made one time computations
+    	years = ['2006','2007','2008','2009','2010','2011','2012','2013'];
+    	n_years = years.length;
+    	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    	// TODO: change month key to numbers
+    	//	months = range(1,13);
+    	n_months = 12;
+    	
+    	var time_scale = d3.scale.linear().domain([50, 910]).range([0, n_years*n_months]);
+    	x_time_scale = Math.floor(time_scale(x))
+    	selected_month = x_time_scale%n_months;
+    	selected_year = Math.floor(x_time_scale/n_months);
+    	time_period_key = months[selected_month]+'_'+years[selected_year];
+    	
+    //	console.log(time_period_key);
+    	
+    	mapFiltersChanged(window.current_source, null, null, time_period_key, null);
+    	// TODO: update map viz here
+    	
+    	
+    	moveTicker(x);
+    }
+    
+    function destinationSelected()
+    {
+    	// todo called when the user selects the destination station
+    	// in the time series plot
+    }
+    
+    function regionSelected()
+    {
+    	// todo region selected
+    }
+    </script>
+    <script src="_data/sample-ts.js"></script>
+    <script src="_js/time-series.js"></script>
+    
   </body>
 </html>
