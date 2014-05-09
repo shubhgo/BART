@@ -192,6 +192,18 @@ svg_ts.selectAll(".ticker")
 	.style("stroke-width", 1)
 	.style("stroke-opacity", 0.4);
 	
+svg_ts.selectAll(".tickertext")
+	.data([{'x1':60,'x2':60,'y1':0,'y2':height}])
+    .enter()
+    .append("text")
+    .attr("class", "tickertext")
+	.attr("x", function(data) { return data.x1+5; })
+	.attr("y", function(data) { return data.y1+15; })
+	.text( "Jan 2006" );
+
+//Add SVG Text Element Attributes
+
+	
 svg_ts.selectAll(".tickeryedge")
 	.data([{'x1':width,'x2':width,'y1':0,'y2':height}])
 	.enter()
@@ -207,7 +219,7 @@ svg_ts.selectAll(".tickeryedge")
 //	.style("shape-rendering": "crispEdges");
 
 
-function moveTicker(x)
+function moveTicker(x, ticker_text)
 {
 	var ticker_data = [{'x1':x,'x2':x,'y1':0,'y2':height}];
 	
@@ -217,4 +229,10 @@ function moveTicker(x)
 		.attr("y1", function (data) { return data.y1; })
 		.attr("x2", function (data) { return data.x2; })
 		.attr("y2", function (data) { return data.y2; })
+	var ticker_text = svg_ts.selectAll(".tickertext")
+		.data(ticker_data)
+		.attr("x", function(data) { return data.x1+5; })
+		.attr("y", function(data) { return data.y1+15; })
+		.text( ticker_text );
+		
 }
