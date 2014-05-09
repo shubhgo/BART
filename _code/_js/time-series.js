@@ -42,10 +42,13 @@ var yAxis = d3.svg.axis()
     var val_string = val.toString();
     if (val_string.charAt(0) == '1')
     {
-    return '10';
+    return val;
+    }else if (val_string == '5000') {
+    	return val;
     }else {
-    	return '';
-    }});
+    	return "";
+    }
+});
 //	.tickFormat(function(val) { console.log(val); return Math.round(Math.log(val)); });
 //    var superscript = "⁰¹²³⁴⁵⁶⁷⁸⁹",
 //        formatPower = function(d) { return (d + "").split("").map(function(c) { return superscript[c]; }).join(""); };

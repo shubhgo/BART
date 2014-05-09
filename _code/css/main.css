@@ -299,15 +299,27 @@ width: 940px;
   border-color: #000;
 	margin-left: -12px;
 }
-.span10 {
+/*.span10 {
   width: 900px;
   height: 500px;
   margin-top: 15px;
   border: 1px dotted;
   border-color: #000;
   padding: 5px;
+}*/
+.span-gender{
+	width: 900px;
+	height: 637px;
+	margin-top: 15px;
+	border: 1px dotted;
+	border-color: #000;
+	padding: 5px;
 }
-.span9 {
+.span-text-top h2{
+	font-weight: lighter;
+	font-style: normal;
+}
+.span-text-top {
   width: 920px;
 	margin-top: 15px;
 	margin-left: -12px;
@@ -683,7 +695,7 @@ h4 small {
 }
 ul,
 ol {
-  padding: 0 0 0 373px;
+  padding: 0 0 0 530px;
   margin: 0 0 10px 25px;
 }
 ul ul,
