@@ -132,7 +132,7 @@ function timeSeriesFiltersChanged(source, destination, region, time, weekend)
 {
 	// load data
 	time_series_file = "_data/time_series/"+source_station_id+"_ridership.json";
-	d3.json(time_series_file, function(json, error){
+	d3.json(time_series_file, function(error, json){
 		if (error) return console.warn('Error: '+error);
 		
 		var time_line_data = json;

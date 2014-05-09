@@ -10,7 +10,8 @@
       <link rel="stylesheet" href="css/main.css">
 
       <script src="js/vendor/modernizr-2.6.1.min.js"></script>
-      <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+      <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+      <!--<script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>-->
       <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
       <script type="text/javascript" src="_data/stations.js"></script>
       <script type="text/javascript" src="_data/edges.js"></script>
@@ -85,7 +86,9 @@ var edge_wt=0;
 //scales
 var x_map = d3.scale.linear().domain([0, 25]).range([0, 500]);
 var y_map = d3.scale.linear().domain([0, 25]).range([0, 500]);
-var e = d3.scale.linear().domain([0, 4000]).range([0, 20]);
+var e = d3.scale.linear()
+	.domain([1, 5000])
+	.range([0, 20]);
 
 var svg_container = d3.select(".span11").append("svg")
 	.attr("width", 900)
@@ -228,7 +231,7 @@ function mapFiltersChanged(source, destination, region, time, weekend)
 		// url localhost:27608/edges?datetime=jan2014&source=source_station_id
 		edge_weight_file = "_data/edges/"+source_station_id+".json";
 		
-		d3.json(edge_weight_file, function(json, error){
+		d3.json(edge_weight_file, function(error, json){
 			if (error) return console.warn('Error: '+error);
 			
 			window.edge_wt = json;
