@@ -49,14 +49,22 @@ var current_weekend = "";//For Later
 var edge_wt=0;
 
 //scales
-var x_map = d3.scale.linear().domain([0, 25]).range([0, 400]);
-var y_map = d3.scale.linear().domain([0, 25]).range([0, 600]);
+var x_map = d3.scale.linear().domain([0, 25]).range([0, 500]);
+var y_map = d3.scale.linear().domain([0, 25]).range([0, 500]);
 var e = d3.scale.linear().domain([0, 4000]).range([0, 20]);
 
-var svg_map = d3.select("body").append("svg")
-	.attr("width", 960)
-	.attr("height", 620);
+var svg_container = d3.select("body").append("svg")
+	.attr("width", 900)
+	.attr("height", 500)
 
+svg_container.append("image")
+    .attr("xlink:href", "_image/map.png")
+    .attr("width", 900)
+    .attr("height", 500);
+
+svg_map = svg_container
+	.append("g")
+	.attr("transform", "translate(" + 50 + "," + 10 + ")");
 // add edges
 svg_map.selectAll("line")
 	.data(edges)
