@@ -7,6 +7,31 @@
     <script type="text/javascript" src="_data/edges.js"></script>
     <script type="text/javascript" src="_js/helper.js"></script>
     <title>Stations.html</title>
+    <style>
+    
+    body {
+      font: 10px sans-serif;
+    }
+    
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    
+/*    .x.axis path {
+      display: none;
+    }*/
+    
+    .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+    }
+    
+    </style>
+    
 </head>
 <body>
 <div id="viz"></div>
@@ -82,7 +107,11 @@ function sourceSelected()
 	current_element = d3.select(this);
 	source_station_id = current_element.datum().st_id;
 	
+	/* update the map */
 	mapFiltersChanged(source_station_id, null, null, null, window.default_time, null);
+	
+	/* update the time series */
+	timeSeriesFiltersChanged(source_station_id, null, null, null, window.default_time, null);
 	//console.log(current_element.datum().st_id);
 
 	
@@ -119,7 +148,7 @@ function mapFiltersChanged(source, destination, region, time, weekend)
 	// TODO:(Later) better support for other filters
 	if (source != window.current_source)
 	{
-		console.log('source station changed to: ' + source);
+//		console.log('source station changed to: ' + source);
 		/* update filter */
 		window.current_source = source;
 		/* realod data*/
@@ -144,7 +173,7 @@ function mapFiltersChanged(source, destination, region, time, weekend)
 	{
 		// Point in time changed
 		/* reanimate map */
-		console.log('time changed to: ' + time);
+//		console.log('time changed to: ' + time);
 		/* update filters */
 		window.current_time = time;
 		/* animate map with new data */
@@ -226,7 +255,7 @@ function scrubbedToTime()
 	selected_year = Math.floor(x_time_scale/n_months);
 	time_period_key = months[selected_month]+'_'+years[selected_year];
 	
-	console.log(time_period_key);
+//	console.log(time_period_key);
 	
 	mapFiltersChanged(window.current_source, null, null, time_period_key, null);
 	// TODO: update map viz here
