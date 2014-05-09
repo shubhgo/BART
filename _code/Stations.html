@@ -132,12 +132,21 @@ circles
 	.style("fill", function(d) { return d.color; });
 
 
-circles.on('mouseover', tip_circle.show)
+circles.on('mouseover.source', tip_circle.show)
+	.on('mouseover.dst', dstSelected)
 	.on('mouseout', tip_circle.hide)
-	.on("mousedown", sourceSelected);
-//.on("mouseover", expandStationSize)
-//	.on("mouseout", returnStationSizeToNormal)
+	.on('mousedown', sourceSelected);
 
+//.on("mouseover", expandStationSize)
+//.on("mouseout", returnStationSizeToNormal)
+
+function dstSelected()
+{
+	// TODO highlight
+	current_element = d3.select(this);
+	var destination = current_element.datum().st_id;
+	highlightDestinationTimeSeries(destination);
+}
 
 function expandStationSize()
 {
@@ -231,7 +240,7 @@ function mapFiltersChanged(source, destination, region, time, weekend)
 		/* animate map with new data */
 		current_time_data = window.edge_wt[window.current_time];
 		// console.log(current_time_data);
-		var duration = 500;
+		var duration = 100;
 		animateMapEdgesWithData(current_time_data, duration);
 	}
 }

@@ -114,7 +114,6 @@ destination.append("path")
 
 function timeSeriesFiltersChanged(source, destination, region, time, weekend)
 {
-	console.log('timeSeriesFiltersChanged');
 	// load data
 	time_series_file = "_data/time_series/"+source_station_id+"_ridership.json";
 	d3.json(time_series_file, function(json, error){
@@ -138,6 +137,18 @@ function animateTimeSeriesWithData(time_series_data)
 		.select(".line")
 		.attr("d", function(d) {
 		  return line(d.ridership); });
+}
+
+function highlightDestinationTimeSeries(dest)
+{
+	var destination = svg_ts.selectAll(".destination");
+ 	destination.select(".line")
+		.style("stroke", function(data) {
+		if (data.destination == dest) {
+			return "blue";
+		}else {
+			return "grey";
+		}});
 }
 
 svg_ts.selectAll(".ticker")
