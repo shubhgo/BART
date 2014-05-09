@@ -1,6 +1,6 @@
 var margin_ts = {top: 20, right: 50, bottom: 30, left: 50},
     width = 900 - margin_ts.left - margin_ts.right,
-    height = 500 - margin_ts.top - margin_ts.bottom;
+    height = 300 - margin_ts.top - margin_ts.bottom;
 
 
 var parseDate = d3.time.format("%Y%m%d").parse;
