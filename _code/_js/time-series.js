@@ -17,10 +17,11 @@ var x = d3.time.scale()
 
 
 var maxRiders = 5000;
-var y = d3.scale.linear()
-    .range([height, 0])
+var ridership_scale = d3.scale.log()
+	.base(10)
+    .range([height, 1])
     .domain([
-    	d3.min([0]),
+    	1,
     	d3.max([maxRiders])
     ]);
 
@@ -34,15 +35,27 @@ var xAxis = d3.svg.axis()
 
 
 var yAxis = d3.svg.axis()
-    .scale(y)
+    .scale(ridership_scale)
     .orient("left")
-    .ticks(4);
+    .ticks(4)
+    .tickFormat(function(val) {
+    var val_string = val.toString();
+    if (val_string.charAt(0) == '1')
+    {
+    return '10';
+    }else {
+    	return '';
+    }});
+//	.tickFormat(function(val) { console.log(val); return Math.round(Math.log(val)); });
+//    var superscript = "⁰¹²³⁴⁵⁶⁷⁸⁹",
+//        formatPower = function(d) { return (d + "").split("").map(function(c) { return superscript[c]; }).join(""); };
+    
 
 
 var line = d3.svg.line()
     .interpolate("basis")
     .x(function(d) { return x(parseTimeSeriesDate(d.time)); })
-    .y(function(d) { return y(d.ridership); });
+    .y(function(d) { return ridership_scale(d.ridership); });
 
 
 var svg_ts = d3.select(".span12").append("svg")
