@@ -49,8 +49,8 @@ var current_weekend = "";//For Later
 var edge_wt=0;
 
 //scales
-var x = d3.scale.linear().domain([0, 25]).range([0, 400]);
-var y = d3.scale.linear().domain([0, 25]).range([0, 600]);
+var x_map = d3.scale.linear().domain([0, 25]).range([0, 400]);
+var y_map = d3.scale.linear().domain([0, 25]).range([0, 600]);
 var e = d3.scale.linear().domain([0, 4000]).range([0, 20]);
 
 var svgContainer = d3.select("body").append("svg")
@@ -62,10 +62,10 @@ var edges = svgContainer.selectAll("line")
 						.data(edges)
 						.enter()
 						.append("line")
-						.attr("x1", function (data) { return x(data.x1); })
-						.attr("y1", function (data) { return y(data.y1); })
-						.attr("x2", function (data) { return x(data.x2); })
-						.attr("y2", function (data) { return y(data.y2); })
+						.attr("x1", function (data) { return x_map(data.x1); })
+						.attr("y1", function (data) { return y_map(data.y1); })
+						.attr("x2", function (data) { return x_map(data.x2); })
+						.attr("y2", function (data) { return y_map(data.y2); })
 						.style("stroke", "rgb(6,120,155)")
 						.style("stroke-width", 1)
 						.style("stroke-opacity", 0.6);
@@ -77,8 +77,8 @@ var circles = svgContainer.selectAll("circle")
                           .append("circle");
 
 var circleAttributes = circles
-                       .attr("cx", function (d) { return x(d.x_axis); })
-                       .attr("cy", function (d) { return y(d.y_axis); })
+                       .attr("cx", function (d) { return x_map(d.x_axis); })
+                       .attr("cy", function (d) { return y_map(d.y_axis); })
                        .attr("r", function (d) { return d.radius; })
                        .style("fill", function(d) { return d.color; });
 

@@ -1,6 +1,6 @@
-var margin = {top: 20, right: 50, bottom: 30, left: 50},
-    width = 900 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+var margin_ts = {top: 20, right: 50, bottom: 30, left: 50},
+    width = 900 - margin_ts.left - margin_ts.right,
+    height = 500 - margin_ts.top - margin_ts.bottom;
 
 
 var parseDate = d3.time.format("%Y%m%d").parse;
@@ -45,10 +45,10 @@ var line = d3.svg.line()
 
 
 var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width + margin_ts.left + margin_ts.right)
+    .attr("height", height + margin_ts.top + margin_ts.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin_ts.left + "," + margin_ts.top + ")");
 
 
 var rectangle = svg.append("rect")
