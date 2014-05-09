@@ -267,13 +267,13 @@ a:hover {
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 940px;
+width: 940px;
 }
 .span12 {
   width: 900px;
   height: 300px;
   margin-top: 15px;
-  border: 1px dotted;
+  /*border: 1px dotted;*/
   border-color: #000;
 }
 .span11 {
@@ -282,6 +282,7 @@ a:hover {
   margin-top: 15px;
   /*border: 1px dotted;*/
   border-color: #000;
+	margin-left: 50px;
 }
 .span10 {
   width: 900px;

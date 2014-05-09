@@ -16,7 +16,7 @@ var x = d3.time.scale()
      ]);;
 
 
-var maxRiders = 3000;
+var maxRiders = 5000;
 var y = d3.scale.linear()
     .range([height, 0])
     .domain([
@@ -35,7 +35,8 @@ var xAxis = d3.svg.axis()
 
 var yAxis = d3.svg.axis()
     .scale(y)
-    .orient("left");
+    .orient("left")
+    .ticks(4);
 
 
 var line = d3.svg.line()
@@ -56,9 +57,9 @@ var rectangle = svg_ts.append("rect")
 	.attr("y", 0)
 	.attr("width", width)
 	.attr("height", height)
-	.style("stroke", "rgb(6,120,155)")
-	.style("stroke-width", 1)
-	.style("stroke-opacity", 0.6)
+//	.style("stroke", "rgb(6,120,155)")
+//	.style("stroke-width", 1)
+//	.style("stroke-opacity", 0.6)
 	.style("fill","white");
 
 rectangle.on("mousemove", scrubbedToTime);
@@ -89,17 +90,31 @@ setUpChart(manipulatedData);
 svg_ts.append("g")
   .attr("class", "x axis")
   .attr("transform", "translate(0," + height + ")")
-  .call(xAxis);
+  .call(xAxis)
+  .selectAll("text")
+  .attr("transform", "translate(20,-5)");
 
 svg_ts.append("g")
   .attr("class", "y axis")
   .call(yAxis)
-  .append("text")
-  .attr("transform", "rotate(-90)")
+  .selectAll("text")
+  .attr("transform", "rotate(-90) translate(5,-20)")
   .attr("y", 6)
   .attr("dy", ".71em")
-  .style("text-anchor", "end")
-  .text("Riders");
+  .style("text-anchor", "end");
+
+
+//svg.append("g")
+//    .attr("class", "x axis")
+//    .attr("transform", "translate(0," + height + ")")
+//    .call(xAxis)
+//  .selectAll("text")
+//    .attr("y", 0)
+//    .attr("x", 9)
+//    .attr("dy", ".35em")
+//    .attr("transform", "rotate(90)")
+//    .style("text-anchor", "start");
+
 
 var destination = svg_ts.selectAll(".destination")
   .data(manipulatedData)
@@ -110,7 +125,7 @@ destination.append("path")
     .attr("class", "line")
     .attr("d", function(d) {
       return line(d.ridership); })
-    .style("stroke", "blue");
+    .style("stroke", "#197CE3");
 
 function timeSeriesFiltersChanged(source, destination, region, time, weekend)
 {
@@ -145,9 +160,21 @@ function highlightDestinationTimeSeries(dest)
  	destination.select(".line")
 		.style("stroke", function(data) {
 		if (data.destination == dest) {
-			return "blue";
+			return "#197CE3";
 		}else {
-			return "grey";
+			return "#C8C8C8";
+		}})
+		.style("stroke-width", function(data) {
+		if (data.destination == dest) {
+			return 2;
+		}else {
+			return 0.5;
+		}})
+		.style("stroke-opacity", function(data) {
+		if (data.destination == dest) {
+			return 1;
+		}else {
+			return 0.8;
 		}});
 }
 
@@ -160,9 +187,22 @@ svg_ts.selectAll(".ticker")
 	.attr("y1", function (data) { return data.y1; })
 	.attr("x2", function (data) { return data.x2; })
 	.attr("y2", function (data) { return data.y2; })
-	.style("stroke", "rgb(6,120,155)")
+	.style("stroke", "black")
 	.style("stroke-width", 1)
-	.style("stroke-opacity", 0.6);
+	.style("stroke-opacity", 0.4);
+	
+svg_ts.selectAll(".ticker-yedge")
+	.data([{'x1':800,'x2':800,'y1':0,'y2':height}])
+	.enter()
+	.append("line")
+	.attr("class", "ticker")
+	.attr("x1", function (data) { return data.x1; })
+	.attr("y1", function (data) { return data.y1; })
+	.attr("x2", function (data) { return data.x2; })
+	.attr("y2", function (data) { return data.y2; })
+	.style("stroke", "black")
+	.style("stroke-width", 1)
+	.style("stroke-opacity", 0.4);
 
 
 function moveTicker(x)
