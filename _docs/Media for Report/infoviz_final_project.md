@@ -1,5 +1,7 @@
 # Infoviz final project
 
+- Opne source under a liscense
+
 # Design goals
 - Content over controls:
 - We wanted to show the BART ridership data and have the user interact with it and play with it from the moment they launched it. Our ridership data has three dimensions and we wanted to figure out a way to allow the user to play around with it without having to go through drop downs and clicking buttons.
@@ -25,6 +27,8 @@
 	
 	
 - is there some one at the iSchool who can advice us on fast prototyping
+
+- Add support for other languages
 
 # Marti Feedback
 - Small multiples is confusing because it is not small multiples of the same visualization
