@@ -56,7 +56,7 @@ var yAxis = d3.svg.axis()
 
 
 var line = d3.svg.line()
-    .interpolate("basis")
+    .interpolate("linear")
     .x(function(d) { return x(parseTimeSeriesDate(d.time)); })
     .y(function(d) { return ridership_scale(d.ridership); });
 
