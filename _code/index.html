@@ -87,6 +87,7 @@ var edge_wt=0;
 //scales
 var x_map = d3.scale.linear().domain([0, 25]).range([0, 500]);
 var y_map = d3.scale.linear().domain([0, 25]).range([0, 500]);
+// edge scale
 var e = d3.scale.linear()
 	.domain([1, 5000])
 	.range([0, 20]);
@@ -147,6 +148,12 @@ circles
 //	.on('mouseout', tip_circle.hide)
 	.on('mousedown', sourceSelected);
 
+/*
+ * First Srouce: downtown berkeley set here
+ */
+source_station_id = "BK_temp";
+setTimeout( sourceSelected(), 500);
+
 //.on("mouseover", expandStationSize)
 //.on("mouseout", returnStationSizeToNormal)
 
@@ -172,18 +179,47 @@ function returnStationSizeToNormal()
 
 function sourceSelected()
 {
-	// This is where shit goes down!
-	// Get source station
 	current_element = d3.select(this);
-	source_station_id = current_element.datum().st_id;
+	if (source_station_id=='BK_temp'){
+
+		console.log("sourceSelected: First");
+		current_element = "BK";
+		source_station_id = "BK";
+	} else {
+		console.log("sourceSelected: Repeat");
+		// Get source station
+		source_station_id = current_element.datum().st_id;
+	}
+	// This is where shit goes down!
+	
 	
 	/* increase source station size */
-	d3.selectAll('.station')
-	.attr("r",4)
-	.style("fill","#000000");
 	
-	d3.select(this).attr("r", 8)
-	.style("fill", "#972219");
+	if (current_element == 'BK') {
+		d3.selectAll('.station').attr("r", function(d,i){
+			if (d.st_id == 'BK') {
+				return 8;
+			} else {
+				return 4;
+			}
+		})
+		.style("fill", function(d,i){
+			if (d.st_id == 'BK') {
+				return '#972219';
+			} else {
+				return '#000000';
+			}
+		});
+	} else { 
+		d3.selectAll('.station')
+		.attr("r",4)
+		.style("fill","#000000");
+
+		d3.select(this).attr("r", 8)
+		.style("fill", "#972219");
+	}
+	
+
 	
 	
 	/* update the map */
